@@ -1,0 +1,46 @@
+{
+  "title": "Get dataset variable and attribute metadata",
+  "description": "Retrieve metadata for a specific dataset, including all variables, their units, and coordinate ranges.",
+  "request": {
+    "method": "GET",
+    "url": "https://coastwatch.pfeg.noaa.gov/erddap/info/cwwcNDBCMet/index.json"
+  },
+  "response": {
+    "status": 200,
+    "contentType": "application/json",
+    "body": {
+      "table": {
+        "columnNames": ["Row Type", "Variable Name", "Attribute Name", "Data Type", "Value"],
+        "columnTypes": ["String", "String", "String", "String", "String"],
+        "rows": [
+          ["attribute", "NC_GLOBAL", "title", "String", "NDBC Standard Meteorological Buoy Data, 1970-present"],
+          ["attribute", "NC_GLOBAL", "institution", "String", "NOAA NDBC"],
+          ["attribute", "NC_GLOBAL", "summary", "String", "The National Data Buoy Center (NDBC) distributes meteorological data from moored buoys and coastal stations."],
+          ["attribute", "NC_GLOBAL", "geospatial_lat_min", "double", "-14.0"],
+          ["attribute", "NC_GLOBAL", "geospatial_lat_max", "double", "71.758"],
+          ["attribute", "NC_GLOBAL", "geospatial_lon_min", "double", "-180.0"],
+          ["attribute", "NC_GLOBAL", "geospatial_lon_max", "double", "180.0"],
+          ["attribute", "NC_GLOBAL", "time_coverage_start", "String", "1970-02-26T20:00:00Z"],
+          ["variable", "time", "", "double", ""],
+          ["attribute", "time", "units", "String", "seconds since 1970-01-01T00:00:00Z"],
+          ["attribute", "time", "actual_range", "double", "6595200.0, 1.7E9"],
+          ["variable", "latitude", "", "float", ""],
+          ["attribute", "latitude", "units", "String", "degrees_north"],
+          ["attribute", "latitude", "actual_range", "float", "-14.0, 71.758"],
+          ["variable", "longitude", "", "float", ""],
+          ["attribute", "longitude", "units", "String", "degrees_east"],
+          ["attribute", "longitude", "actual_range", "float", "-180.0, 180.0"],
+          ["variable", "wtmp", "", "float", ""],
+          ["attribute", "wtmp", "long_name", "String", "SST"],
+          ["attribute", "wtmp", "standard_name", "String", "sea_surface_temperature"],
+          ["attribute", "wtmp", "units", "String", "degree_C"],
+          ["attribute", "wtmp", "missing_value", "float", "-9999999.0"],
+          ["variable", "atmp", "", "float", ""],
+          ["attribute", "atmp", "long_name", "String", "Air Temperature"],
+          ["attribute", "atmp", "standard_name", "String", "air_temperature"],
+          ["attribute", "atmp", "units", "String", "degree_C"]
+        ]
+      }
+    }
+  }
+}

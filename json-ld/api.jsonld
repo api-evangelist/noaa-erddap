@@ -1,0 +1,87 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "erddap": "https://erddap.github.io/ontology#",
+    "noaa": "https://www.noaa.gov/ontology#"
+  },
+  "@type": "WebAPI",
+  "@id": "https://coastwatch.pfeg.noaa.gov/erddap",
+  "name": "NOAA ERDDAP REST API",
+  "description": "Environmental Research Division Data Access Program (ERDDAP) — a scientific data server providing simple, consistent access to gridded and tabular oceanographic, meteorological, and climate science datasets.",
+  "url": "https://coastwatch.pfeg.noaa.gov/erddap/index.html",
+  "provider": {
+    "@type": "Organization",
+    "name": "NOAA CoastWatch",
+    "url": "https://coastwatch.noaa.gov",
+    "email": "coastwatch.info@noaa.gov",
+    "parentOrganization": {
+      "@type": "GovernmentOrganization",
+      "name": "National Oceanic and Atmospheric Administration",
+      "alternateName": "NOAA",
+      "url": "https://www.noaa.gov"
+    }
+  },
+  "license": "https://www.usa.gov/government-works",
+  "termsOfService": "https://www.usa.gov/government-works",
+  "documentation": [
+    "https://coastwatch.pfeg.noaa.gov/erddap/rest.html",
+    "https://coastwatch.pfeg.noaa.gov/erddap/tabledap/documentation.html",
+    "https://coastwatch.pfeg.noaa.gov/erddap/griddap/documentation.html"
+  ],
+  "availableChannel": [
+    {
+      "@type": "ServiceChannel",
+      "serviceUrl": "https://coastwatch.pfeg.noaa.gov/erddap",
+      "name": "NOAA CoastWatch West Coast Node"
+    },
+    {
+      "@type": "ServiceChannel",
+      "serviceUrl": "https://coastwatch.noaa.gov/erddap",
+      "name": "NOAA CoastWatch Central Hub"
+    },
+    {
+      "@type": "ServiceChannel",
+      "serviceUrl": "https://www.ncei.noaa.gov/erddap",
+      "name": "NCEI ERDDAP"
+    },
+    {
+      "@type": "ServiceChannel",
+      "serviceUrl": "https://polarwatch.noaa.gov/erddap",
+      "name": "PolarWatch ERDDAP"
+    }
+  ],
+  "keywords": [
+    "oceanography",
+    "meteorology",
+    "climate science",
+    "gridded data",
+    "tabular data",
+    "OPeNDAP",
+    "WMS",
+    "NetCDF",
+    "NOAA",
+    "environmental data",
+    "open data",
+    "government"
+  ],
+  "potentialAction": [
+    {
+      "@type": "SearchAction",
+      "name": "Full-text dataset search",
+      "target": "https://coastwatch.pfeg.noaa.gov/erddap/search/index.json?searchFor={searchFor}",
+      "query-input": "required name=searchFor"
+    },
+    {
+      "@type": "SearchAction",
+      "name": "Advanced dataset search",
+      "target": "https://coastwatch.pfeg.noaa.gov/erddap/search/advanced.json"
+    }
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock",
+    "description": "Free public access; no API key required for public datasets."
+  }
+}

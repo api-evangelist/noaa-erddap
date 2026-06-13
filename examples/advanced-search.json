@@ -1,0 +1,26 @@
+{
+  "title": "Advanced dataset search with spatial and temporal filters",
+  "description": "Find all temperature-related tabular datasets within a geographic bounding box and a specific time range.",
+  "request": {
+    "method": "GET",
+    "url": "https://coastwatch.pfeg.noaa.gov/erddap/search/advanced.json?searchFor=temperature&protocol=tabledap&cdm_data_type=TimeSeries&ioos_category=Temperature&minLon=-100&maxLon=-60&minLat=20&maxLat=50&minTime=2020-01-01T00:00:00Z&maxTime=2024-12-31T23:59:59Z&page=1&itemsPerPage=25"
+  },
+  "notes": [
+    "All filter parameters default to (ANY) if omitted",
+    "protocol can be: tabledap, griddap, wms, wcs, or (ANY)",
+    "cdm_data_type corresponds to CF Discrete Sampling Geometry types",
+    "ioos_category values include: Temperature, Salinity, Currents, Wind, Waves, etc.",
+    "Spatial bounds in decimal degrees (-180 to 180 lon, -90 to 90 lat)"
+  ],
+  "response": {
+    "status": 200,
+    "contentType": "application/json",
+    "body": {
+      "table": {
+        "columnNames": ["griddap", "Subset", "tabledap", "Make A Graph", "wms", "files", "Accessible", "Title", "Summary", "FGDC", "ISO 19115", "Info", "Background Info", "RSS", "Email", "Institution", "ID"],
+        "columnTypes": ["String", "String", "String", "String", "String", "String", "String", "String", "String", "String", "String", "String", "String", "String", "String", "String", "String"],
+        "rows": []
+      }
+    }
+  }
+}

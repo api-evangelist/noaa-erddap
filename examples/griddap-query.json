@@ -1,0 +1,20 @@
+{
+  "title": "Griddap data query — MODIS sea surface temperature",
+  "description": "Download a spatial subset of gridded satellite SST data for a bounding box over the US East Coast for a specific date, returned as NetCDF.",
+  "request": {
+    "method": "GET",
+    "url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/erdMBsstd1day.nc?sst[(2023-06-15T12:00:00Z)][(0.0)][(25.0):(45.0)][(-82.0):(-65.0)]"
+  },
+  "notes": [
+    "Dimension subscripts: [(time)][(altitude)][(lat_min):(lat_max)][(lon_min):(lon_max)]",
+    "Parentheses denote value-based (not index-based) subscripting",
+    "Replace .nc with .csv, .json, .kml, .png, etc. for different output formats",
+    "Always call /info/{datasetID}/index.json first to discover valid variable names and coordinate ranges",
+    "For stride (decimation): [(start):(stride):(stop)], e.g. [(25.0):(2):(45.0)]"
+  ],
+  "response": {
+    "status": 200,
+    "contentType": "application/x-netcdf",
+    "description": "Binary NetCDF file containing a 2-D SST grid for the requested spatial extent and time."
+  }
+}

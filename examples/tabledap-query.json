@@ -1,0 +1,31 @@
+{
+  "title": "Tabledap data query — NDBC buoy sea surface temperature",
+  "description": "Download a subset of tabular (in-situ) buoy data: time, location, and water temperature for the past 7 days, returned as JSON.",
+  "request": {
+    "method": "GET",
+    "url": "https://coastwatch.pfeg.noaa.gov/erddap/tabledap/cwwcNDBCMet.json?time,latitude,longitude,wtmp&time>=now-7days&time<=now&wtmp!=NaN&orderBy(%22time%22)"
+  },
+  "notes": [
+    "Variable list before constraints: time,latitude,longitude,wtmp",
+    "Constraint &time>=now-7days uses ERDDAP relative time expression",
+    "&wtmp!=NaN filters out missing values",
+    "&orderBy(\"time\") sorts results chronologically",
+    "Replace .json with .csv, .nc, .geojson, etc. to change output format"
+  ],
+  "response": {
+    "status": 200,
+    "contentType": "application/json",
+    "body": {
+      "table": {
+        "columnNames": ["time", "latitude", "longitude", "wtmp"],
+        "columnTypes": ["String", "float", "float", "float"],
+        "columnUnits": ["UTC", "degrees_north", "degrees_east", "degree_C"],
+        "rows": [
+          ["2024-01-01T00:00:00Z", 32.501, -79.099, 18.5],
+          ["2024-01-01T00:00:00Z", 28.508, -80.185, 22.1],
+          ["2024-01-01T01:00:00Z", 32.501, -79.099, 18.4]
+        ]
+      }
+    }
+  }
+}

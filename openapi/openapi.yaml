@@ -1,0 +1,770 @@
+openapi: 3.1.0
+
+info:
+  title: ERDDAP REST API
+  version: "2.23"
+  description: |
+    OpenAPI specification for ERDDAP (Environmental Research Division's Data
+    Access Program), a scientific data server providing simple, consistent
+    access to gridded and tabular scientific datasets.
+
+    ERDDAP runs at many institutions worldwide. Set the server URL to the base
+    URL of the instance you want to access.
+
+    ## Two-phase workflow for data access
+
+    1. **Discover** — search for datasets (`/search/`) or list all (`/info/index.json`).
+    2. **Inspect** — fetch dataset metadata (`/info/{datasetID}/index.json`) to learn
+       variable names, data types, units, and coordinate ranges.
+    3. **Download** — request data from `/tabledap/` or `/griddap/` using the
+       variable names and constraint ranges discovered in step 2.
+
+    ## Constraint syntax (tabledap and griddap)
+
+    Constraints are appended to the query string as `&varName>=value` pairs.
+
+    | Operator | Meaning |
+    |----------|---------|
+    | `=`  | equals |
+    | `!=` | not equals |
+    | `<`, `<=`, `>`, `>=` | numeric / time comparison |
+    | `=~` | Java regular expression match |
+
+    String values must be double-quoted: `&stationType="fixed"`.
+    Time values can be ISO 8601 (`2020-01-01T00:00:00Z`), seconds since
+    1970-01-01 (Unix epoch), or relative expressions (`now-7days`, `now-1hour`).
+    Spatial relative extremes are also supported: `&latitude<min(latitude)+10`.
+
+    ## Response format selection
+
+    The desired format is embedded in the path (`.json`, `.csv`, `.nc`, etc.)
+    rather than in an `Accept` header. See the `MetadataFileType` and
+    `DataFileType` schemas for the full list.
+
+  contact:
+    name: ERDDAP Project
+    url: https://github.com/ERDDAP/erddap
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: https://coastwatch.pfeg.noaa.gov/erddap
+    description: NOAA CoastWatch West Coast Node (reference server)
+  - url: https://erddap.ioos.us/erddap
+    description: US IOOS ERDDAP
+  - url: "{baseUrl}"
+    description: Any ERDDAP server — replace with the instance base URL
+    variables:
+      baseUrl:
+        default: https://coastwatch.pfeg.noaa.gov/erddap
+        description: |
+          Base URL of any ERDDAP server, including the /erddap path segment
+          if present (e.g. https://example.org/erddap).
+
+tags:
+  - name: Discovery
+    description: Search and browse available datasets.
+  - name: Metadata
+    description: Inspect variable and attribute metadata for a specific dataset.
+  - name: Data Access
+    description: Download subsets of tabular or gridded data.
+  - name: Files
+    description: Browse and download raw files associated with a dataset.
+
+paths:
+
+  # ── Discovery ──────────────────────────────────────────────────────────────
+
+  /search/index.{fileType}:
+    get:
+      summary: Full-text search across all datasets
+      operationId: searchDatasets
+      tags: [Discovery]
+      description: |
+        Google-like search of dataset metadata. Words are matched separately
+        (AND logic). Phrase search: `"wind speed"`. Exclude a word: `-salinity`.
+        Case-insensitive; partial words are matched.
+      parameters:
+        - $ref: "#/components/parameters/metadataFileType"
+        - name: searchFor
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "sea surface temperature"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/itemsPerPage"
+      responses:
+        "200":
+          description: Matching datasets.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DatasetList"
+            text/csv:
+              schema:
+                type: string
+
+  /search/advanced.{fileType}:
+    get:
+      summary: Advanced search with metadata and spatial/temporal filters
+      operationId: searchDatasetsAdvanced
+      tags: [Discovery]
+      description: |
+        Filter datasets by protocol, CDM data type, institution, IOOS category,
+        CF standard name, variable name, bounding box, and time range.
+        All filter parameters default to `(ANY)` (no filter applied).
+      parameters:
+        - $ref: "#/components/parameters/metadataFileType"
+        - name: searchFor
+          in: query
+          description: Free-text search terms (same syntax as simple search).
+          schema:
+            type: string
+        - name: protocol
+          in: query
+          schema:
+            type: string
+            enum: ["(ANY)", tabledap, griddap, wms, wcs]
+            default: "(ANY)"
+        - name: cdm_data_type
+          in: query
+          description: CF Discrete Sampling Geometry type.
+          schema:
+            type: string
+            enum:
+              - "(ANY)"
+              - Grid
+              - TimeSeries
+              - TimeSeriesProfile
+              - Trajectory
+              - TrajectoryProfile
+              - Point
+              - Profile
+              - Other
+            default: "(ANY)"
+        - name: institution
+          in: query
+          schema:
+            type: string
+            default: "(ANY)"
+        - name: ioos_category
+          in: query
+          description: IOOS data category (e.g. Temperature, Salinity, Currents).
+          schema:
+            type: string
+            default: "(ANY)"
+        - name: keywords
+          in: query
+          schema:
+            type: string
+            default: "(ANY)"
+        - name: long_name
+          in: query
+          schema:
+            type: string
+            default: "(ANY)"
+        - name: standard_name
+          in: query
+          description: CF standard name (e.g. sea_surface_temperature).
+          schema:
+            type: string
+            default: "(ANY)"
+        - name: variableName
+          in: query
+          description: Variable short name as it appears in the dataset.
+          schema:
+            type: string
+            default: "(ANY)"
+        - name: minLon
+          in: query
+          description: Western boundary (decimal degrees, -180 to 180).
+          schema:
+            type: number
+            minimum: -180
+            maximum: 180
+        - name: maxLon
+          in: query
+          description: Eastern boundary (decimal degrees, -180 to 180).
+          schema:
+            type: number
+            minimum: -180
+            maximum: 180
+        - name: minLat
+          in: query
+          description: Southern boundary (decimal degrees, -90 to 90).
+          schema:
+            type: number
+            minimum: -90
+            maximum: 90
+        - name: maxLat
+          in: query
+          description: Northern boundary (decimal degrees, -90 to 90).
+          schema:
+            type: number
+            minimum: -90
+            maximum: 90
+        - name: minTime
+          in: query
+          description: Earliest time (ISO 8601 or seconds since 1970-01-01T00:00:00Z).
+          schema:
+            type: string
+          example: "2020-01-01T00:00:00Z"
+        - name: maxTime
+          in: query
+          description: Latest time (ISO 8601 or seconds since 1970-01-01T00:00:00Z).
+          schema:
+            type: string
+          example: "2020-12-31T23:59:59Z"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/itemsPerPage"
+      responses:
+        "200":
+          description: Matching datasets.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DatasetList"
+            text/csv:
+              schema:
+                type: string
+
+  /info/index.{fileType}:
+    get:
+      summary: List all datasets available on this server
+      operationId: listAllDatasets
+      tags: [Discovery]
+      description: Returns every dataset the server exposes, with title, institution, and access URLs.
+      parameters:
+        - $ref: "#/components/parameters/metadataFileType"
+        - $ref: "#/components/parameters/itemsPerPage"
+      responses:
+        "200":
+          description: All datasets on this ERDDAP server.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DatasetList"
+            text/csv:
+              schema:
+                type: string
+
+  /categorize/{attribute}/index.{fileType}:
+    get:
+      summary: List all distinct values for a metadata attribute
+      operationId: listAttributeValues
+      tags: [Discovery]
+      description: Returns every distinct value that appears for the given attribute across all datasets on this server.
+      parameters:
+        - $ref: "#/components/parameters/categorizeAttribute"
+        - $ref: "#/components/parameters/metadataFileType"
+      responses:
+        "200":
+          description: All distinct values for the attribute across this server's datasets.
+
+  /categorize/{attribute}/{value}/index.{fileType}:
+    get:
+      summary: List datasets that match a specific metadata attribute value
+      operationId: listDatasetsByAttribute
+      tags: [Discovery]
+      description: Filters the full dataset list to those whose metadata contains the specified attribute value (case-insensitive).
+      parameters:
+        - $ref: "#/components/parameters/categorizeAttribute"
+        - name: value
+          in: path
+          required: true
+          description: The attribute value to filter by (case-insensitive).
+          schema:
+            type: string
+          example: temperature
+        - $ref: "#/components/parameters/metadataFileType"
+      responses:
+        "200":
+          description: Datasets whose metadata matches the given attribute value.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DatasetList"
+            text/csv:
+              schema:
+                type: string
+
+  # ── Metadata ───────────────────────────────────────────────────────────────
+
+  /info/{datasetID}/index.{fileType}:
+    get:
+      summary: Get variable and attribute metadata for a dataset
+      operationId: getDatasetInfo
+      tags: [Metadata]
+      description: |
+        Returns a table describing every variable and global attribute in the
+        dataset. Each row is one of:
+
+        | Row Type  | Variable Name | Attribute Name | Data Type | Value |
+        |-----------|--------------|----------------|-----------|-------|
+        | attribute | NC_GLOBAL    | title          | String    | ...   |
+        | variable  | time         |                | double    |       |
+        | attribute | time         | units          | String    | seconds since 1970-01-01T00:00:00Z |
+
+        Use this response to discover variable names, units, `standard_name`,
+        and the actual coordinate ranges (`actual_range` attributes) before
+        constructing a data request.
+      parameters:
+        - name: datasetID
+          in: path
+          required: true
+          description: Unique dataset identifier (visible in search results as the `ID` column).
+          schema:
+            type: string
+          example: erdMBsstd1day
+        - $ref: "#/components/parameters/metadataFileType"
+      responses:
+        "200":
+          description: Dataset metadata table.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DatasetInfo"
+            text/csv:
+              schema:
+                type: string
+        "404":
+          description: Dataset not found on this server.
+
+  # ── Data Access ────────────────────────────────────────────────────────────
+
+  /tabledap/{datasetID}.{fileType}:
+    get:
+      summary: Download a subset of a tabular dataset
+      operationId: getTabledapData
+      tags: [Data Access]
+      description: |
+        Retrieves in-situ, station, trajectory, or profile data (CDM types
+        other than Grid).
+
+        **Query string structure:** `?variables&constraints`
+
+        - `variables` — comma-separated variable names; omit for all variables.
+        - `constraints` — `&varName>=value` pairs appended after the variable list.
+
+        **Special result modifiers (append to query):**
+        - `&distinct()` — return only unique rows.
+        - `&orderBy("var1,var2")` — sort results.
+        - `&orderByMax("var1")` — keep only the row with the max value per group.
+        - `&units("UDUNITS")` — convert units.
+
+        Always call `/info/{datasetID}/index.json` first to discover valid
+        variable names and coordinate ranges.
+      parameters:
+        - name: datasetID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: cwwcNDBCMet
+        - name: fileType
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/DataFileType"
+        - name: variables
+          in: query
+          description: |
+            Comma-separated variable names to include in the response.
+            Omit to return all variables.
+          schema:
+            type: string
+          example: "time,latitude,longitude,wtmp"
+        - name: time>=
+          in: query
+          description: Lower time bound (ISO 8601 or `now-Nunit` expression).
+          schema:
+            type: string
+          example: "2020-01-01T00:00:00Z"
+        - name: time<=
+          in: query
+          description: Upper time bound.
+          schema:
+            type: string
+        - name: latitude>=
+          in: query
+          schema:
+            type: number
+        - name: latitude<=
+          in: query
+          schema:
+            type: number
+        - name: longitude>=
+          in: query
+          schema:
+            type: number
+        - name: longitude<=
+          in: query
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Tabular data subset in the requested format.
+          content:
+            text/csv:
+              schema:
+                type: string
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TabledapJsonResponse"
+            application/x-netcdf:
+              schema:
+                type: string
+                format: binary
+        "400":
+          description: |
+            Bad request. Common causes: unknown variable name, constraint value
+            out of range, malformed constraint syntax.
+        "404":
+          description: Dataset not found.
+
+  /griddap/{datasetID}.{fileType}:
+    get:
+      summary: Download a subset of a gridded dataset
+      operationId: getGriddapData
+      tags: [Data Access]
+      description: |
+        Retrieves satellite, model, or reanalysis data (CDM Grid type).
+
+        **Query string structure:**
+        `?var1[(d1_start):(d1_stop)][(d2_start):(d2_stop)],...`
+
+        Dimension subscripts use parentheses for value-based indexing:
+        `?sst[(2020-01-01T12:00:00Z)][(0.0)][(20.0):(50.0)][(-80.0):(-60.0)]`
+
+        Stride syntax: `[(start):(stride):(stop)]`
+        Select all values in a dimension: `[]`
+
+        Dimensions are always in the order shown by `/info/{datasetID}/index.json`
+        (typically time, altitude/depth, latitude, longitude for 4-D datasets).
+
+        Always call `/info/{datasetID}/index.json` first to discover dimension
+        names, their order, and valid ranges.
+      parameters:
+        - name: datasetID
+          in: path
+          required: true
+          schema:
+            type: string
+          example: erdMBsstd1day
+        - name: fileType
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/DataFileType"
+      responses:
+        "200":
+          description: Gridded data subset in the requested format.
+          content:
+            application/x-netcdf:
+              schema:
+                type: string
+                format: binary
+            text/csv:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad request — unknown variable or out-of-range dimension subscript.
+        "404":
+          description: Dataset not found.
+
+  # ── Files ──────────────────────────────────────────────────────────────────
+
+  /files/{datasetID}:
+    get:
+      summary: Browse raw files for a dataset
+      operationId: listDatasetFiles
+      tags: [Files]
+      description: |
+        Returns an HTML directory listing of the raw source files for datasets
+        that expose a file system. Individual files can be downloaded by
+        appending the filename to this URL.
+      parameters:
+        - name: datasetID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: HTML directory listing.
+          content:
+            text/html:
+              schema:
+                type: string
+
+# ── Reusable components ────────────────────────────────────────────────────
+
+components:
+
+  parameters:
+
+    metadataFileType:
+      name: fileType
+      in: path
+      required: true
+      schema:
+        $ref: "#/components/schemas/MetadataFileType"
+
+    categorizeAttribute:
+      name: attribute
+      in: path
+      required: true
+      description: Metadata attribute to categorize by.
+      schema:
+        type: string
+        enum:
+          - cdm_data_type
+          - institution
+          - ioos_category
+          - keywords
+          - keywords_vocabulary
+          - long_name
+          - standard_name
+          - variableName
+
+    page:
+      name: page
+      in: query
+      description: Page number (1-based).
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+
+    itemsPerPage:
+      name: itemsPerPage
+      in: query
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1000000
+
+  schemas:
+
+    MetadataFileType:
+      type: string
+      description: Response format for discovery and metadata endpoints.
+      enum:
+        - html
+        - csv
+        - csvp
+        - csv0
+        - json
+        - jsonlCSV1
+        - jsonlCSV
+        - jsonlKVP
+        - tsv
+        - tsvp
+        - tsv0
+        - xhtml
+
+    DataFileType:
+      type: string
+      description: Response format for tabledap and griddap data requests.
+      enum:
+        - csv
+        - csvp
+        - csv0
+        - json
+        - jsonlCSV1
+        - jsonlCSV
+        - jsonlKVP
+        - tsv
+        - tsvp
+        - tsv0
+        - nc
+        - ncHeader
+        - ncCF
+        - ncCFHeader
+        - ncCFMA
+        - ncCFMAHeader
+        - nccsv
+        - nccsvMetadata
+        - ncoJson
+        - mat
+        - asc
+        - das
+        - dds
+        - dods
+        - esriCsv
+        - fgdc
+        - geoJson
+        - iso19115
+        - itx
+        - kml
+        - odvTxt
+        - smallPdf
+        - pdf
+        - largePdf
+        - smallPng
+        - png
+        - largePng
+        - transparentPng
+        - wav
+        - xhtml
+        - html
+        - dataTable
+        - subset
+        - graph
+
+    DatasetList:
+      type: object
+      description: |
+        ERDDAP wraps all JSON responses in a `table` envelope with parallel
+        `columnNames`, `columnTypes`, and `rows` arrays.
+      properties:
+        table:
+          type: object
+          required: [columnNames, columnTypes, rows]
+          properties:
+            columnNames:
+              type: array
+              items:
+                type: string
+              example:
+                - griddap
+                - Subset
+                - tabledap
+                - Make A Graph
+                - wms
+                - files
+                - Accessible
+                - Title
+                - Summary
+                - FGDC
+                - ISO 19115
+                - Info
+                - Background Info
+                - RSS
+                - Email
+                - Institution
+                - ID
+            columnTypes:
+              type: array
+              items:
+                type: string
+              example:
+                - String
+                - String
+                - String
+                - String
+                - String
+                - String
+                - String
+                - String
+                - String
+                - String
+                - String
+                - String
+                - String
+                - String
+                - String
+                - String
+                - String
+            rows:
+              type: array
+              description: One array per dataset; values correspond to columnNames.
+              items:
+                type: array
+                items: {}
+
+    DatasetInfo:
+      type: object
+      description: |
+        Variable and attribute metadata for a single dataset, returned as an
+        ERDDAP table with five columns.
+      properties:
+        table:
+          type: object
+          required: [columnNames, columnTypes, rows]
+          properties:
+            columnNames:
+              type: array
+              items:
+                type: string
+              example:
+                - Row Type
+                - Variable Name
+                - Attribute Name
+                - Data Type
+                - Value
+            columnTypes:
+              type: array
+              items:
+                type: string
+              example:
+                - String
+                - String
+                - String
+                - String
+                - String
+            rows:
+              type: array
+              description: |
+                Row types:
+                - `attribute` + `NC_GLOBAL` — dataset-level (global) attribute.
+                - `variable` — declares a variable (Attribute Name and Value are empty).
+                - `attribute` + variable name — attribute of that variable.
+              items:
+                type: array
+                minItems: 5
+                maxItems: 5
+                items: {}
+                prefixItems:
+                  - description: "Row Type: 'attribute' or 'variable'"
+                    type: string
+                  - description: "Variable Name or 'NC_GLOBAL'"
+                    type: string
+                  - description: "Attribute Name (empty for variable rows)"
+                    type: string
+                  - description: "Data Type (String, double, float, int, …)"
+                    type: string
+                  - description: "Value"
+                    type: string
+              example:
+                - [attribute, NC_GLOBAL, title, String, "NDBC Standard Meteorological Buoy Data"]
+                - [attribute, NC_GLOBAL, institution, String, "NOAA NDBC"]
+                - [variable, time, "", double, ""]
+                - [attribute, time, units, String, "seconds since 1970-01-01T00:00:00Z"]
+                - [attribute, time, actual_range, double, "1.0E9, 1.7E9"]
+                - [variable, wtmp, "", float, ""]
+                - [attribute, wtmp, long_name, String, "SST"]
+                - [attribute, wtmp, units, String, "degree_C"]
+
+    TabledapJsonResponse:
+      type: object
+      description: JSON response from a tabledap data request (same envelope as DatasetList).
+      properties:
+        table:
+          type: object
+          required: [columnNames, columnTypes, columnUnits, rows]
+          properties:
+            columnNames:
+              type: array
+              items:
+                type: string
+            columnTypes:
+              type: array
+              items:
+                type: string
+            columnUnits:
+              type: array
+              items:
+                type: string
+                nullable: true
+            rows:
+              type: array
+              items:
+                type: array
+                items: {}

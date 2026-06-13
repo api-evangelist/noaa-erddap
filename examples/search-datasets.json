@@ -1,0 +1,39 @@
+{
+  "title": "Full-text dataset search",
+  "description": "Search for datasets using keywords. Returns all datasets matching 'sea surface temperature'.",
+  "request": {
+    "method": "GET",
+    "url": "https://coastwatch.pfeg.noaa.gov/erddap/search/index.json?searchFor=sea+surface+temperature&page=1&itemsPerPage=10"
+  },
+  "response": {
+    "status": 200,
+    "contentType": "application/json",
+    "body": {
+      "table": {
+        "columnNames": ["griddap", "Subset", "tabledap", "Make A Graph", "wms", "files", "Accessible", "Title", "Summary", "FGDC", "ISO 19115", "Info", "Background Info", "RSS", "Email", "Institution", "ID"],
+        "columnTypes": ["String", "String", "String", "String", "String", "String", "String", "String", "String", "String", "String", "String", "String", "String", "String", "String", "String"],
+        "rows": [
+          [
+            "https://coastwatch.pfeg.noaa.gov/erddap/griddap/erdMBsstd1day",
+            "",
+            "",
+            "https://coastwatch.pfeg.noaa.gov/erddap/griddap/erdMBsstd1day.graph",
+            "https://coastwatch.pfeg.noaa.gov/erddap/wms/erdMBsstd1day/request",
+            "",
+            "public",
+            "SST, Aqua MODIS, NPP, 0.025 degrees, Pacific, Daytime, 2006-present (1 Day Composite)",
+            "MODIS Aqua Level-3 standard mapped image, sea surface temperature, 4μm, day. Processed with Science Quality processing, Version R2019.0.",
+            "https://coastwatch.pfeg.noaa.gov/erddap/metadata/fgdc/xml/erdMBsstd1day_fgdc.xml",
+            "https://coastwatch.pfeg.noaa.gov/erddap/metadata/iso19115/xml/erdMBsstd1day_iso19115.xml",
+            "https://coastwatch.pfeg.noaa.gov/erddap/info/erdMBsstd1day/index.json",
+            "https://oceanwatch.pfeg.noaa.gov/thredds/dodsC/satellite/MB/sst/1day",
+            "https://coastwatch.pfeg.noaa.gov/erddap/rss/erdMBsstd1day.rss",
+            "https://coastwatch.pfeg.noaa.gov/erddap/subscriptions/add.html?datasetID=erdMBsstd1day&showErrors=false&email=",
+            "NOAA NMFS SWFSC ERD",
+            "erdMBsstd1day"
+          ]
+        ]
+      }
+    }
+  }
+}

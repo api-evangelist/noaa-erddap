@@ -39,6 +39,8 @@ apis:
         url: https://coastwatch.pfeg.noaa.gov/erddap/griddap/documentation.html
       - type: TermsOfService
         url: https://www.usa.gov/government-works
+      - type: OpenAPI
+        url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/openapi/openapi.yaml
       - type: Plans
         url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/plans/plans.yml
       - type: RateLimits
