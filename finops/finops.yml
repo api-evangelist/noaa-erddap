@@ -1,0 +1,15 @@
+name: NOAA ERDDAP FinOps
+description: NOAA ERDDAP is a free, publicly funded United States government service operated by NOAA. There are no costs to access the API or download data.
+cost: free
+government_funded: true
+agency: National Oceanic and Atmospheric Administration (NOAA)
+notes:
+  - NOAA ERDDAP is funded by US taxpayers and provided as a public good at no charge.
+  - No API keys, tokens, subscriptions, or payment methods are required.
+  - Data downloads in all supported file formats are free and unlimited for public datasets.
+  - Organizations building applications on top of ERDDAP should plan for server-side resource constraints (large request timeouts) rather than financial costs.
+  - NOAA also makes data available through cloud storage partnerships (AWS, Google Cloud, Azure) via the NOAA Big Data Program, which may have associated cloud egress costs depending on the cloud provider and access method.
+  - For cloud-hosted NOAA datasets, refer to the NOAA Big Data Project FAQ at https://www.noaa.gov/big-data-project-frequently-asked-questions
+considerations:
+  - While the API itself is free, downstream infrastructure costs (storage, compute for processing large datasets) are the responsibility of the consuming application.
+  - NetCDF and other binary formats may be more bandwidth-efficient than text formats for large scientific datasets.

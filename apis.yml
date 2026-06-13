@@ -1,0 +1,89 @@
+name: NOAA ERDDAP
+description: NOAA Environmental Research Division Data Access Program (ERDDAP) is a free, publicly accessible REST API and data server that provides a simple, consistent way to search, subset, and download gridded and tabular oceanographic, meteorological, and climate science datasets in a wide variety of common file formats.
+image: https://www.noaa.gov/sites/default/files/styles/crop_394x394/public/2022-03/NOAA_2022_logo.png
+tags:
+  - oceanography
+  - meteorology
+  - climate
+  - environmental data
+  - gridded data
+  - tabular data
+  - scientific data
+  - government
+  - NOAA
+  - open data
+created: "2026-06-13"
+modified: "2026-06-13"
+url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/apis.yml
+specificationVersion: "0.19"
+apis:
+  - name: NOAA ERDDAP REST API
+    description: RESTful web services for searching and downloading subsets of gridded (satellite, model) and tabular (buoy, station) oceanographic, meteorological, and climate science datasets. Supports OPeNDAP, WMS, and numerous data file formats.
+    humanURL: https://coastwatch.pfeg.noaa.gov/erddap/index.html
+    baseURL: https://coastwatch.pfeg.noaa.gov/erddap
+    tags:
+      - oceanography
+      - meteorology
+      - climate science
+      - gridded data
+      - tabular data
+      - OPeNDAP
+      - WMS
+      - NetCDF
+    properties:
+      - type: Documentation
+        url: https://coastwatch.pfeg.noaa.gov/erddap/rest.html
+      - type: Documentation
+        url: https://coastwatch.pfeg.noaa.gov/erddap/tabledap/documentation.html
+      - type: Documentation
+        url: https://coastwatch.pfeg.noaa.gov/erddap/griddap/documentation.html
+      - type: TermsOfService
+        url: https://www.usa.gov/government-works
+      - type: Plans
+        url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/plans/plans.yml
+      - type: RateLimits
+        url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/rate-limits/rate-limits.yml
+      - type: FinOps
+        url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/finops/finops.yml
+    contact:
+      - FN: NOAA CoastWatch
+        email: coastwatch.info@noaa.gov
+        url: https://coastwatch.noaa.gov
+    meta:
+      - key: baseURLs
+        value: |
+          CoastWatch West Coast: https://coastwatch.pfeg.noaa.gov/erddap
+          CoastWatch Central Hub: https://coastwatch.noaa.gov/erddap
+          NCEI: https://www.ncei.noaa.gov/erddap
+          PolarWatch: https://polarwatch.noaa.gov/erddap
+          CO-OPS: https://opendap.co-ops.nos.noaa.gov/erddap
+          PMEL OCS: https://www.pmel.noaa.gov/ocs/erddap
+      - key: authentication
+        value: None required for public datasets. Optional Google account login for private datasets on supported installations.
+      - key: dataFormats
+        value: CSV, JSON, NetCDF (.nc), Parquet, GeoJSON, TSV, MATLAB (.mat), OPeNDAP (.asc/.dods/.das/.dds), ODV, KML, PNG, PDF, XHTML, NCCSV, Croissant, WAV, ISO 19115, FGDC
+      - key: endpoints
+        value: |
+          GET /index.[fileType] - Main resource listing
+          GET /info/index.[fileType] - List all datasets
+          GET /info/{datasetID}/index.[fileType] - Dataset metadata
+          GET /search/index.[fileType]?searchFor={query} - Full text search
+          GET /search/advanced.[fileType] - Advanced multi-parameter search
+          GET /categorize/index.[fileType] - Available category attributes
+          GET /categorize/{attribute}/index.[fileType] - Categories for attribute
+          GET /categorize/{attribute}/{category}/index.[fileType] - Datasets in category
+          GET /griddap/index.[fileType] - List gridded datasets
+          GET /griddap/{datasetID}.[fileType]{?query} - Download gridded data subset
+          GET /griddap/{datasetID}.das - Gridded dataset attribute structure
+          GET /griddap/{datasetID}.dds - Gridded dataset structure descriptor
+          GET /tabledap/index.[fileType] - List tabular datasets
+          GET /tabledap/{datasetID}.[fileType]{?query} - Download tabular data subset
+          GET /tabledap/allDatasets.[fileType] - Metadata about all datasets
+          GET /wms/index.[fileType] - List WMS-accessible datasets
+          GET /version - Version number
+          GET /version_string - Detailed version string
+common:
+
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,25 @@
+name: NOAA ERDDAP Access Plans
+description: NOAA ERDDAP is a free, publicly funded US government data service. There are no subscription tiers, pricing plans, or API keys required for accessing public datasets.
+plans:
+  - name: Public Access
+    description: Unrestricted access to all publicly available oceanographic, meteorological, and climate science datasets. No registration or API key required.
+    url: https://coastwatch.pfeg.noaa.gov/erddap/index.html
+    free: true
+    authentication: none
+    features:
+      - Full access to all public gridded and tabular datasets
+      - Data download in 20+ file formats (CSV, JSON, NetCDF, Parquet, GeoJSON, etc.)
+      - Graph and map generation (PNG, PDF, KML)
+      - Full-text dataset search and advanced filtered search
+      - OPeNDAP-compliant data access
+      - Metadata in FGDC, ISO 19115, and other standards
+      - Supports gzip/deflate compression
+      - JSONP callback support
+  - name: Authenticated Access (Private Datasets)
+    description: Optional Google account login to access private or restricted datasets on ERDDAP installations that support authentication. Not required for the vast majority of public data.
+    url: https://coastwatch.pfeg.noaa.gov/erddap/login.html
+    free: true
+    authentication: google-oauth
+    features:
+      - Access to authorized private datasets (installation-specific)
+      - All public access features included

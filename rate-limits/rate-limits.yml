@@ -1,0 +1,17 @@
+name: NOAA ERDDAP Rate Limits
+description: NOAA ERDDAP does not publish explicit rate limits. As a publicly funded US government service it is designed for open, broad access. However, the service is shared infrastructure and large or unconstrained requests may time out or be throttled server-side.
+documented: false
+notes:
+  - No formal rate limiting policy is published in ERDDAP documentation.
+  - ERDDAP recommends breaking large time-series requests into smaller chunks (fewer than ~30 time points per request) to avoid server-side timeouts.
+  - Requests without constraints can return extremely large datasets; always apply time/geographic/variable constraints.
+  - The server supports HTTP compression (gzip/deflate) which reduces bandwidth usage.
+  - Multiple NOAA ERDDAP mirror servers exist (CoastWatch, NCEI, PolarWatch, etc.) and users can distribute load across nodes.
+  - Contact coastwatch.info@noaa.gov for questions about data access policies or server load considerations.
+best_practices:
+  - Apply time range constraints to all requests.
+  - Apply geographic bounding box constraints where applicable.
+  - Select only required variables rather than downloading entire datasets.
+  - Use compressed responses by sending Accept-Encoding: gzip header.
+  - For bulk downloads, consider splitting requests into manageable chunks.
+  - Use the allDatasets metadata endpoint to discover datasets before requesting data.
