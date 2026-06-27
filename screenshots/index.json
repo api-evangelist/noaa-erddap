@@ -1,0 +1,10 @@
+[
+  {
+    "repo": "noaa-erddap",
+    "captured_at": "2026-06-20T190341",
+    "source_url": "https://coastwatch.pfeg.noaa.gov",
+    "source_type": "fallback-api",
+    "file": "noaa-erddap-2026-06-20T190341.png",
+    "bytes": 245533
+  }
+]
