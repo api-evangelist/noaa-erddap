@@ -1,0 +1,35 @@
+generated: '2026-07-11'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: coastwatch.pfeg.noaa.gov
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Jan 19 23:59:59 2027 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: erddap.ioos.us
+  https: true
+  tls_version: TLSv1.2
+  cert_expires: Sep 18 17:40:29 2026 GMT
+  hsts: true
+  hsts_max_age: 0
+domains:
+- domain: noaa.gov
+  dnssec: true
+  caa:
+  - 0 issue "ssl.com"
+  - 0 issue "letsencrypt.org"
+  - 0 issue "entrust.net"
+  - 0 issue "godaddy.com"
+  - 0 issue "sectigo.com"
+  - 0 issue "globalsign.com"
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
+- domain: ioos.us
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: quarantine
