@@ -86,6 +86,8 @@ apis:
           GET /version_string - Detailed version string
 common:
 
+  - type: AgenticAccess
+    url: agentic-access/noaa-erddap-agentic-access.yml
   - type: DomainSecurity
     url: security/noaa-erddap-domain-security.yml
 maintainers:
