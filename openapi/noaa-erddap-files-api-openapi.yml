@@ -1,0 +1,56 @@
+openapi: 3.1.0
+info:
+  title: ERDDAP REST Data Access Files API
+  version: '2.23'
+  description: "OpenAPI specification for ERDDAP (Environmental Research Division's Data\nAccess Program), a scientific data server providing simple, consistent\naccess to gridded and tabular scientific datasets.\n\nERDDAP runs at many institutions worldwide. Set the server URL to the base\nURL of the instance you want to access.\n\n## Two-phase workflow for data access\n\n1. **Discover** — search for datasets (`/search/`) or list all (`/info/index.json`).\n2. **Inspect** — fetch dataset metadata (`/info/{datasetID}/index.json`) to learn\n   variable names, data types, units, and coordinate ranges.\n3. **Download** — request data from `/tabledap/` or `/griddap/` using the\n   variable names and constraint ranges discovered in step 2.\n\n## Constraint syntax (tabledap and griddap)\n\nConstraints are appended to the query string as `&varName>=value` pairs.\n\n| Operator | Meaning |\n|----------|---------|\n| `=`  | equals |\n| `!=` | not equals |\n| `<`, `<=`, `>`, `>=` | numeric / time comparison |\n| `=~` | Java regular expression match |\n\nString values must be double-quoted: `&stationType=\"fixed\"`.\nTime values can be ISO 8601 (`2020-01-01T00:00:00Z`), seconds since\n1970-01-01 (Unix epoch), or relative expressions (`now-7days`, `now-1hour`).\nSpatial relative extremes are also supported: `&latitude<min(latitude)+10`.\n\n## Response format selection\n\nThe desired format is embedded in the path (`.json`, `.csv`, `.nc`, etc.)\nrather than in an `Accept` header. See the `MetadataFileType` and\n`DataFileType` schemas for the full list.\n"
+  contact:
+    name: ERDDAP Project
+    url: https://github.com/ERDDAP/erddap
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: https://coastwatch.pfeg.noaa.gov/erddap
+  description: NOAA CoastWatch West Coast Node (reference server)
+- url: https://erddap.ioos.us/erddap
+  description: US IOOS ERDDAP
+- url: '{baseUrl}'
+  description: Any ERDDAP server — replace with the instance base URL
+  variables:
+    baseUrl:
+      default: https://coastwatch.pfeg.noaa.gov/erddap
+      description: 'Base URL of any ERDDAP server, including the /erddap path segment
+
+        if present (e.g. https://example.org/erddap).
+
+        '
+tags:
+- name: Files
+  description: Browse and download raw files associated with a dataset.
+paths:
+  /files/{datasetID}:
+    get:
+      summary: Browse raw files for a dataset
+      operationId: listDatasetFiles
+      tags:
+      - Files
+      description: 'Returns an HTML directory listing of the raw source files for datasets
+
+        that expose a file system. Individual files can be downloaded by
+
+        appending the filename to this URL.
+
+        '
+      parameters:
+      - name: datasetID
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: HTML directory listing.
+          content:
+            text/html:
+              schema:
+                type: string

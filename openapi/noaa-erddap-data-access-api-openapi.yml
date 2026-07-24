@@ -1,0 +1,280 @@
+openapi: 3.1.0
+info:
+  title: ERDDAP REST Data Access API
+  version: '2.23'
+  description: "OpenAPI specification for ERDDAP (Environmental Research Division's Data\nAccess Program), a scientific data server providing simple, consistent\naccess to gridded and tabular scientific datasets.\n\nERDDAP runs at many institutions worldwide. Set the server URL to the base\nURL of the instance you want to access.\n\n## Two-phase workflow for data access\n\n1. **Discover** — search for datasets (`/search/`) or list all (`/info/index.json`).\n2. **Inspect** — fetch dataset metadata (`/info/{datasetID}/index.json`) to learn\n   variable names, data types, units, and coordinate ranges.\n3. **Download** — request data from `/tabledap/` or `/griddap/` using the\n   variable names and constraint ranges discovered in step 2.\n\n## Constraint syntax (tabledap and griddap)\n\nConstraints are appended to the query string as `&varName>=value` pairs.\n\n| Operator | Meaning |\n|----------|---------|\n| `=`  | equals |\n| `!=` | not equals |\n| `<`, `<=`, `>`, `>=` | numeric / time comparison |\n| `=~` | Java regular expression match |\n\nString values must be double-quoted: `&stationType=\"fixed\"`.\nTime values can be ISO 8601 (`2020-01-01T00:00:00Z`), seconds since\n1970-01-01 (Unix epoch), or relative expressions (`now-7days`, `now-1hour`).\nSpatial relative extremes are also supported: `&latitude<min(latitude)+10`.\n\n## Response format selection\n\nThe desired format is embedded in the path (`.json`, `.csv`, `.nc`, etc.)\nrather than in an `Accept` header. See the `MetadataFileType` and\n`DataFileType` schemas for the full list.\n"
+  contact:
+    name: ERDDAP Project
+    url: https://github.com/ERDDAP/erddap
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: https://coastwatch.pfeg.noaa.gov/erddap
+  description: NOAA CoastWatch West Coast Node (reference server)
+- url: https://erddap.ioos.us/erddap
+  description: US IOOS ERDDAP
+- url: '{baseUrl}'
+  description: Any ERDDAP server — replace with the instance base URL
+  variables:
+    baseUrl:
+      default: https://coastwatch.pfeg.noaa.gov/erddap
+      description: 'Base URL of any ERDDAP server, including the /erddap path segment
+
+        if present (e.g. https://example.org/erddap).
+
+        '
+tags:
+- name: Data Access
+  description: Download subsets of tabular or gridded data.
+paths:
+  /tabledap/{datasetID}.{fileType}:
+    get:
+      summary: Download a subset of a tabular dataset
+      operationId: getTabledapData
+      tags:
+      - Data Access
+      description: 'Retrieves in-situ, station, trajectory, or profile data (CDM types
+
+        other than Grid).
+
+
+        **Query string structure:** `?variables&constraints`
+
+
+        - `variables` — comma-separated variable names; omit for all variables.
+
+        - `constraints` — `&varName>=value` pairs appended after the variable list.
+
+
+        **Special result modifiers (append to query):**
+
+        - `&distinct()` — return only unique rows.
+
+        - `&orderBy("var1,var2")` — sort results.
+
+        - `&orderByMax("var1")` — keep only the row with the max value per group.
+
+        - `&units("UDUNITS")` — convert units.
+
+
+        Always call `/info/{datasetID}/index.json` first to discover valid
+
+        variable names and coordinate ranges.
+
+        '
+      parameters:
+      - name: datasetID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: cwwcNDBCMet
+      - name: fileType
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/DataFileType'
+      - name: variables
+        in: query
+        description: 'Comma-separated variable names to include in the response.
+
+          Omit to return all variables.
+
+          '
+        schema:
+          type: string
+        example: time,latitude,longitude,wtmp
+      - name: time>=
+        in: query
+        description: Lower time bound (ISO 8601 or `now-Nunit` expression).
+        schema:
+          type: string
+        example: '2020-01-01T00:00:00Z'
+      - name: time<=
+        in: query
+        description: Upper time bound.
+        schema:
+          type: string
+      - name: latitude>=
+        in: query
+        schema:
+          type: number
+      - name: latitude<=
+        in: query
+        schema:
+          type: number
+      - name: longitude>=
+        in: query
+        schema:
+          type: number
+      - name: longitude<=
+        in: query
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Tabular data subset in the requested format.
+          content:
+            text/csv:
+              schema:
+                type: string
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TabledapJsonResponse'
+            application/x-netcdf:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: 'Bad request. Common causes: unknown variable name, constraint value
+
+            out of range, malformed constraint syntax.
+
+            '
+        '404':
+          description: Dataset not found.
+  /griddap/{datasetID}.{fileType}:
+    get:
+      summary: Download a subset of a gridded dataset
+      operationId: getGriddapData
+      tags:
+      - Data Access
+      description: 'Retrieves satellite, model, or reanalysis data (CDM Grid type).
+
+
+        **Query string structure:**
+
+        `?var1[(d1_start):(d1_stop)][(d2_start):(d2_stop)],...`
+
+
+        Dimension subscripts use parentheses for value-based indexing:
+
+        `?sst[(2020-01-01T12:00:00Z)][(0.0)][(20.0):(50.0)][(-80.0):(-60.0)]`
+
+
+        Stride syntax: `[(start):(stride):(stop)]`
+
+        Select all values in a dimension: `[]`
+
+
+        Dimensions are always in the order shown by `/info/{datasetID}/index.json`
+
+        (typically time, altitude/depth, latitude, longitude for 4-D datasets).
+
+
+        Always call `/info/{datasetID}/index.json` first to discover dimension
+
+        names, their order, and valid ranges.
+
+        '
+      parameters:
+      - name: datasetID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: erdMBsstd1day
+      - name: fileType
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/DataFileType'
+      responses:
+        '200':
+          description: Gridded data subset in the requested format.
+          content:
+            application/x-netcdf:
+              schema:
+                type: string
+                format: binary
+            text/csv:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad request — unknown variable or out-of-range dimension subscript.
+        '404':
+          description: Dataset not found.
+components:
+  schemas:
+    TabledapJsonResponse:
+      type: object
+      description: JSON response from a tabledap data request (same envelope as DatasetList).
+      properties:
+        table:
+          type: object
+          required:
+          - columnNames
+          - columnTypes
+          - columnUnits
+          - rows
+          properties:
+            columnNames:
+              type: array
+              items:
+                type: string
+            columnTypes:
+              type: array
+              items:
+                type: string
+            columnUnits:
+              type: array
+              items:
+                type: string
+                nullable: true
+            rows:
+              type: array
+              items:
+                type: array
+                items: {}
+    DataFileType:
+      type: string
+      description: Response format for tabledap and griddap data requests.
+      enum:
+      - csv
+      - csvp
+      - csv0
+      - json
+      - jsonlCSV1
+      - jsonlCSV
+      - jsonlKVP
+      - tsv
+      - tsvp
+      - tsv0
+      - nc
+      - ncHeader
+      - ncCF
+      - ncCFHeader
+      - ncCFMA
+      - ncCFMAHeader
+      - nccsv
+      - nccsvMetadata
+      - ncoJson
+      - mat
+      - asc
+      - das
+      - dds
+      - dods
+      - esriCsv
+      - fgdc
+      - geoJson
+      - iso19115
+      - itx
+      - kml
+      - odvTxt
+      - smallPdf
+      - pdf
+      - largePdf
+      - smallPng
+      - png
+      - largePng
+      - transparentPng
+      - wav
+      - xhtml
+      - html
+      - dataTable
+      - subset
+      - graph
