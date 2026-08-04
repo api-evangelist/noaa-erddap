@@ -1,0 +1,20 @@
+{
+  "provider": "noaa-erddap",
+  "sources": [
+    "noaa-erddap-data-access-api-openapi.yml",
+    "noaa-erddap-discovery-api-openapi.yml",
+    "noaa-erddap-files-api-openapi.yml",
+    "noaa-erddap-metadata-api-openapi.yml"
+  ],
+  "outputs": [
+    "noaa-erddap-data-access-api-openapi.yml",
+    "noaa-erddap-discovery-api-openapi.yml",
+    "noaa-erddap-files-api-openapi.yml",
+    "noaa-erddap-metadata-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
