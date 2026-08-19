@@ -1,0 +1,654 @@
+{
+  "item": [
+    {
+      "id": "232cdd78-8be7-41f0-8747-db0a656e1d2e",
+      "name": "Discovery",
+      "description": {
+        "content": "Search and browse available datasets.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7ac58947-4105-43c4-92a4-6d18da84a0a2",
+          "name": "Full-text search across all datasets",
+          "request": {
+            "name": "Full-text search across all datasets",
+            "description": {
+              "content": "Google-like search of dataset metadata. Words are matched separately\n(AND logic). Phrase search: `\"wind speed\"`. Exclude a word: `-salinity`.\nCase-insensitive; partial words are matched.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "search",
+                "index.{{fileType}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "searchFor",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-based)."
+                },
+                {
+                  "disabled": false,
+                  "key": "itemsPerPage",
+                  "value": "1000000",
+                  "description": "Maximum number of results to return."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6f2f009c-caeb-4d40-a475-2877e2e15766",
+              "name": "Matching datasets.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search",
+                    "index.{{fileType}}"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "searchFor",
+                      "value": "sea surface temperature"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "itemsPerPage",
+                      "value": "1000000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"table\": {\n    \"columnNames\": [\n      \"griddap\",\n      \"Subset\",\n      \"tabledap\",\n      \"Make A Graph\",\n      \"wms\",\n      \"files\",\n      \"Accessible\",\n      \"Title\",\n      \"Summary\",\n      \"FGDC\",\n      \"ISO 19115\",\n      \"Info\",\n      \"Background Info\",\n      \"RSS\",\n      \"Email\",\n      \"Institution\",\n      \"ID\"\n    ],\n    \"columnTypes\": [\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\"\n    ],\n    \"rows\": [\n      [],\n      []\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "baeab16c-a138-4a98-b4ea-99e7838cde78",
+          "name": "Advanced search with metadata and spatial/temporal filters",
+          "request": {
+            "name": "Advanced search with metadata and spatial/temporal filters",
+            "description": {
+              "content": "Filter datasets by protocol, CDM data type, institution, IOOS category,\nCF standard name, variable name, bounding box, and time range.\nAll filter parameters default to `(ANY)` (no filter applied).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "search",
+                "advanced.{{fileType}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "searchFor",
+                  "value": "<string>",
+                  "description": "Free-text search terms (same syntax as simple search)."
+                },
+                {
+                  "disabled": false,
+                  "key": "protocol",
+                  "value": "(ANY)"
+                },
+                {
+                  "disabled": false,
+                  "key": "cdm_data_type",
+                  "value": "(ANY)",
+                  "description": "CF Discrete Sampling Geometry type."
+                },
+                {
+                  "disabled": false,
+                  "key": "institution",
+                  "value": "(ANY)"
+                },
+                {
+                  "disabled": false,
+                  "key": "ioos_category",
+                  "value": "(ANY)",
+                  "description": "IOOS data category (e.g. Temperature, Salinity, Currents)."
+                },
+                {
+                  "disabled": false,
+                  "key": "keywords",
+                  "value": "(ANY)"
+                },
+                {
+                  "disabled": false,
+                  "key": "long_name",
+                  "value": "(ANY)"
+                },
+                {
+                  "disabled": false,
+                  "key": "standard_name",
+                  "value": "(ANY)",
+                  "description": "CF standard name (e.g. sea_surface_temperature)."
+                },
+                {
+                  "disabled": false,
+                  "key": "variableName",
+                  "value": "(ANY)",
+                  "description": "Variable short name as it appears in the dataset."
+                },
+                {
+                  "disabled": false,
+                  "key": "minLon",
+                  "value": "<number>",
+                  "description": "Western boundary (decimal degrees, -180 to 180)."
+                },
+                {
+                  "disabled": false,
+                  "key": "maxLon",
+                  "value": "<number>",
+                  "description": "Eastern boundary (decimal degrees, -180 to 180)."
+                },
+                {
+                  "disabled": false,
+                  "key": "minLat",
+                  "value": "<number>",
+                  "description": "Southern boundary (decimal degrees, -90 to 90)."
+                },
+                {
+                  "disabled": false,
+                  "key": "maxLat",
+                  "value": "<number>",
+                  "description": "Northern boundary (decimal degrees, -90 to 90)."
+                },
+                {
+                  "disabled": false,
+                  "key": "minTime",
+                  "value": "<string>",
+                  "description": "Earliest time (ISO 8601 or seconds since 1970-01-01T00:00:00Z)."
+                },
+                {
+                  "disabled": false,
+                  "key": "maxTime",
+                  "value": "<string>",
+                  "description": "Latest time (ISO 8601 or seconds since 1970-01-01T00:00:00Z)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-based)."
+                },
+                {
+                  "disabled": false,
+                  "key": "itemsPerPage",
+                  "value": "1000000",
+                  "description": "Maximum number of results to return."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d7d65f7f-e736-4eff-a692-1579295f3bcf",
+              "name": "Matching datasets.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search",
+                    "advanced.{{fileType}}"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "searchFor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "protocol",
+                      "value": "(ANY)"
+                    },
+                    {
+                      "key": "cdm_data_type",
+                      "value": "(ANY)"
+                    },
+                    {
+                      "key": "institution",
+                      "value": "(ANY)"
+                    },
+                    {
+                      "key": "ioos_category",
+                      "value": "(ANY)"
+                    },
+                    {
+                      "key": "keywords",
+                      "value": "(ANY)"
+                    },
+                    {
+                      "key": "long_name",
+                      "value": "(ANY)"
+                    },
+                    {
+                      "key": "standard_name",
+                      "value": "(ANY)"
+                    },
+                    {
+                      "key": "variableName",
+                      "value": "(ANY)"
+                    },
+                    {
+                      "key": "minLon",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "maxLon",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "minLat",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "maxLat",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "minTime",
+                      "value": "2020-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "maxTime",
+                      "value": "2020-12-31T23:59:59Z"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "itemsPerPage",
+                      "value": "1000000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"table\": {\n    \"columnNames\": [\n      \"griddap\",\n      \"Subset\",\n      \"tabledap\",\n      \"Make A Graph\",\n      \"wms\",\n      \"files\",\n      \"Accessible\",\n      \"Title\",\n      \"Summary\",\n      \"FGDC\",\n      \"ISO 19115\",\n      \"Info\",\n      \"Background Info\",\n      \"RSS\",\n      \"Email\",\n      \"Institution\",\n      \"ID\"\n    ],\n    \"columnTypes\": [\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\"\n    ],\n    \"rows\": [\n      [],\n      []\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "76af5f45-dd17-46ea-bc8d-944df4c0d5c1",
+          "name": "List all datasets available on this server",
+          "request": {
+            "name": "List all datasets available on this server",
+            "description": {
+              "content": "Returns every dataset the server exposes, with title, institution, and access URLs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "info",
+                "index.{{fileType}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "itemsPerPage",
+                  "value": "1000000",
+                  "description": "Maximum number of results to return."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "35d660e0-c43c-4aac-9619-053b31fcbac6",
+              "name": "All datasets on this ERDDAP server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "info",
+                    "index.{{fileType}}"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "itemsPerPage",
+                      "value": "1000000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"table\": {\n    \"columnNames\": [\n      \"griddap\",\n      \"Subset\",\n      \"tabledap\",\n      \"Make A Graph\",\n      \"wms\",\n      \"files\",\n      \"Accessible\",\n      \"Title\",\n      \"Summary\",\n      \"FGDC\",\n      \"ISO 19115\",\n      \"Info\",\n      \"Background Info\",\n      \"RSS\",\n      \"Email\",\n      \"Institution\",\n      \"ID\"\n    ],\n    \"columnTypes\": [\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\"\n    ],\n    \"rows\": [\n      [],\n      []\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ce5065d1-0568-4b70-b31c-e43a127edb29",
+          "name": "List all distinct values for a metadata attribute",
+          "request": {
+            "name": "List all distinct values for a metadata attribute",
+            "description": {
+              "content": "Returns every distinct value that appears for the given attribute across all datasets on this server.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "categorize",
+                ":attribute",
+                "index.{{fileType}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "attribute",
+                  "description": "(Required) Metadata attribute to categorize by."
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5b356338-02aa-468f-844c-04ba54df4e97",
+              "name": "All distinct values for the attribute across this server's datasets.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "categorize",
+                    ":attribute",
+                    "index.{{fileType}}"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "attribute",
+                      "description": "(Required) Metadata attribute to categorize by."
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c7b288d0-e7c5-4168-b653-1ea6336b368c",
+          "name": "List datasets that match a specific metadata attribute value",
+          "request": {
+            "name": "List datasets that match a specific metadata attribute value",
+            "description": {
+              "content": "Filters the full dataset list to those whose metadata contains the specified attribute value (case-insensitive).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "categorize",
+                ":attribute",
+                ":value",
+                "index.{{fileType}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "attribute",
+                  "description": "(Required) Metadata attribute to categorize by."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "value",
+                  "description": "(Required) The attribute value to filter by (case-insensitive)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "db720b9d-f8c1-4141-afc8-8b126b9c5c97",
+              "name": "Datasets whose metadata matches the given attribute value.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "categorize",
+                    ":attribute",
+                    ":value",
+                    "index.{{fileType}}"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "attribute",
+                      "description": "(Required) Metadata attribute to categorize by."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "value",
+                      "description": "(Required) The attribute value to filter by (case-insensitive)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"table\": {\n    \"columnNames\": [\n      \"griddap\",\n      \"Subset\",\n      \"tabledap\",\n      \"Make A Graph\",\n      \"wms\",\n      \"files\",\n      \"Accessible\",\n      \"Title\",\n      \"Summary\",\n      \"FGDC\",\n      \"ISO 19115\",\n      \"Info\",\n      \"Background Info\",\n      \"RSS\",\n      \"Email\",\n      \"Institution\",\n      \"ID\"\n    ],\n    \"columnTypes\": [\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\",\n      \"String\"\n    ],\n    \"rows\": [\n      [],\n      []\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://coastwatch.pfeg.noaa.gov/erddap",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) ",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "fileType"
+    }
+  ],
+  "info": {
+    "_postman_id": "5666b2e2-ed5b-4220-b987-6e52d96712ac",
+    "name": "ERDDAP REST Data Access Discovery API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "OpenAPI specification for ERDDAP (Environmental Research Division's Data\nAccess Program), a scientific data server providing simple, consistent\naccess to gridded and tabular scientific datasets.\n\nERDDAP runs at many institutions worldwide. Set the server URL to the base\nURL of the instance you want to access.\n\n## Two-phase workflow for data access\n\n1. **Discover** — search for datasets (`/search/`) or list all (`/info/index.json`).\n2. **Inspect** — fetch dataset metadata (`/info/{datasetID}/index.json`) to learn\n   variable names, data types, units, and coordinate ranges.\n3. **Download** — request data from `/tabledap/` or `/griddap/` using the\n   variable names and constraint ranges discovered in step 2.\n\n## Constraint syntax (tabledap and griddap)\n\nConstraints are appended to the query string as `&varName>=value` pairs.\n\n| Operator | Meaning |\n|----------|---------|\n| `=`  | equals |\n| `!=` | not equals |\n| `<`, `<=`, `>`, `>=` | numeric / time comparison |\n| `=~` | Java regular expression match |\n\nString values must be double-quoted: `&stationType=\"fixed\"`.\nTime values can be ISO 8601 (`2020-01-01T00:00:00Z`), seconds since\n1970-01-01 (Unix epoch), or relative expressions (`now-7days`, `now-1hour`).\nSpatial relative extremes are also supported: `&latitude<min(latitude)+10`.\n\n## Response format selection\n\nThe desired format is embedded in the path (`.json`, `.csv`, `.nc`, etc.)\nrather than in an `Accept` header. See the `MetadataFileType` and\n`DataFileType` schemas for the full list.\n\n\nContact Support:\n Name: ERDDAP Project",
+      "type": "text/plain"
+    }
+  }
+}

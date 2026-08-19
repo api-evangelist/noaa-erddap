@@ -1,0 +1,247 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ERDDAP REST Data Access Discovery API",
+    "version": "2.23"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Discovery",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Full-text search across all datasets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://coastwatch.pfeg.noaa.gov/erddap/search/index.:fileType",
+            "params": [
+              {
+                "name": "fileType",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "searchFor",
+                "value": "sea surface temperature",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)."
+              },
+              {
+                "name": "itemsPerPage",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Google-like search of dataset metadata. Words are matched separately\n(AND logic). Phrase search: `\"wind speed\"`. Exclude a word: `-salinity`.\nCase-insensitive; partial words are matched.\n"
+        },
+        {
+          "info": {
+            "name": "Advanced search with metadata and spatial/temporal filters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://coastwatch.pfeg.noaa.gov/erddap/search/advanced.:fileType",
+            "params": [
+              {
+                "name": "fileType",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "searchFor",
+                "value": "",
+                "type": "query",
+                "description": "Free-text search terms (same syntax as simple search)."
+              },
+              {
+                "name": "protocol",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cdm_data_type",
+                "value": "",
+                "type": "query",
+                "description": "CF Discrete Sampling Geometry type."
+              },
+              {
+                "name": "institution",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ioos_category",
+                "value": "",
+                "type": "query",
+                "description": "IOOS data category (e.g. Temperature, Salinity, Currents)."
+              },
+              {
+                "name": "keywords",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "long_name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "standard_name",
+                "value": "",
+                "type": "query",
+                "description": "CF standard name (e.g. sea_surface_temperature)."
+              },
+              {
+                "name": "variableName",
+                "value": "",
+                "type": "query",
+                "description": "Variable short name as it appears in the dataset."
+              },
+              {
+                "name": "minLon",
+                "value": "",
+                "type": "query",
+                "description": "Western boundary (decimal degrees, -180 to 180)."
+              },
+              {
+                "name": "maxLon",
+                "value": "",
+                "type": "query",
+                "description": "Eastern boundary (decimal degrees, -180 to 180)."
+              },
+              {
+                "name": "minLat",
+                "value": "",
+                "type": "query",
+                "description": "Southern boundary (decimal degrees, -90 to 90)."
+              },
+              {
+                "name": "maxLat",
+                "value": "",
+                "type": "query",
+                "description": "Northern boundary (decimal degrees, -90 to 90)."
+              },
+              {
+                "name": "minTime",
+                "value": "2020-01-01T00:00:00Z",
+                "type": "query",
+                "description": "Earliest time (ISO 8601 or seconds since 1970-01-01T00:00:00Z)."
+              },
+              {
+                "name": "maxTime",
+                "value": "2020-12-31T23:59:59Z",
+                "type": "query",
+                "description": "Latest time (ISO 8601 or seconds since 1970-01-01T00:00:00Z)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)."
+              },
+              {
+                "name": "itemsPerPage",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Filter datasets by protocol, CDM data type, institution, IOOS category,\nCF standard name, variable name, bounding box, and time range.\nAll filter parameters default to `(ANY)` (no filter applied).\n"
+        },
+        {
+          "info": {
+            "name": "List all datasets available on this server",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://coastwatch.pfeg.noaa.gov/erddap/info/index.:fileType",
+            "params": [
+              {
+                "name": "fileType",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "itemsPerPage",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Returns every dataset the server exposes, with title, institution, and access URLs."
+        },
+        {
+          "info": {
+            "name": "List all distinct values for a metadata attribute",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://coastwatch.pfeg.noaa.gov/erddap/categorize/:attribute/index.:fileType",
+            "params": [
+              {
+                "name": "attribute",
+                "value": "",
+                "type": "path",
+                "description": "Metadata attribute to categorize by."
+              },
+              {
+                "name": "fileType",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns every distinct value that appears for the given attribute across all datasets on this server."
+        },
+        {
+          "info": {
+            "name": "List datasets that match a specific metadata attribute value",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://coastwatch.pfeg.noaa.gov/erddap/categorize/:attribute/:value/index.:fileType",
+            "params": [
+              {
+                "name": "attribute",
+                "value": "",
+                "type": "path",
+                "description": "Metadata attribute to categorize by."
+              },
+              {
+                "name": "value",
+                "value": "temperature",
+                "type": "path",
+                "description": "The attribute value to filter by (case-insensitive)."
+              },
+              {
+                "name": "fileType",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Filters the full dataset list to those whose metadata contains the specified attribute value (case-insensitive)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

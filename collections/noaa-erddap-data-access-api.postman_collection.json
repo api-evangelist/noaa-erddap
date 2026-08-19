@@ -1,0 +1,442 @@
+{
+  "item": [
+    {
+      "id": "7165b933-53ff-4141-8b94-5302e306ea00",
+      "name": "Data Access",
+      "description": {
+        "content": "Download subsets of tabular or gridded data.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "98dbb37e-ba98-4260-a154-f91365ff1be1",
+          "name": "Download a subset of a tabular dataset",
+          "request": {
+            "name": "Download a subset of a tabular dataset",
+            "description": {
+              "content": "Retrieves in-situ, station, trajectory, or profile data (CDM types\nother than Grid).\n\n**Query string structure:** `?variables&constraints`\n\n- `variables` — comma-separated variable names; omit for all variables.\n- `constraints` — `&varName>=value` pairs appended after the variable list.\n\n**Special result modifiers (append to query):**\n- `&distinct()` — return only unique rows.\n- `&orderBy(\"var1,var2\")` — sort results.\n- `&orderByMax(\"var1\")` — keep only the row with the max value per group.\n- `&units(\"UDUNITS\")` — convert units.\n\nAlways call `/info/{datasetID}/index.json` first to discover valid\nvariable names and coordinate ranges.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tabledap",
+                "{{datasetID}}.{{fileType}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "variables",
+                  "value": "<string>",
+                  "description": "Comma-separated variable names to include in the response.\nOmit to return all variables.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "time>=",
+                  "value": "<string>",
+                  "description": "Lower time bound (ISO 8601 or `now-Nunit` expression)."
+                },
+                {
+                  "disabled": false,
+                  "key": "time<=",
+                  "value": "<string>",
+                  "description": "Upper time bound."
+                },
+                {
+                  "disabled": false,
+                  "key": "latitude>=",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "latitude<=",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "longitude>=",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "longitude<=",
+                  "value": "<number>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/csv"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cc57e4f9-226c-400f-890d-1b78dcf473a1",
+              "name": "Tabular data subset in the requested format.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tabledap",
+                    "{{datasetID}}.{{fileType}}"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "variables",
+                      "value": "time,latitude,longitude,wtmp"
+                    },
+                    {
+                      "key": "time>",
+                      "value": "=2020-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "time<",
+                      "value": "=<string>"
+                    },
+                    {
+                      "key": "latitude>",
+                      "value": "=<number>"
+                    },
+                    {
+                      "key": "latitude<",
+                      "value": "=<number>"
+                    },
+                    {
+                      "key": "longitude>",
+                      "value": "=<number>"
+                    },
+                    {
+                      "key": "longitude<",
+                      "value": "=<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/csv"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"table\": {\n    \"columnNames\": [\n      \"string\",\n      \"string\"\n    ],\n    \"columnTypes\": [\n      \"string\",\n      \"string\"\n    ],\n    \"columnUnits\": [\n      \"string\",\n      \"string\"\n    ],\n    \"rows\": [\n      [],\n      []\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "922e9f17-dca4-41b3-bee6-dcf0795100d1",
+              "name": "Bad request. Common causes: unknown variable name, constraint value\nout of range, malformed constraint syntax.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tabledap",
+                    "{{datasetID}}.{{fileType}}"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "variables",
+                      "value": "time,latitude,longitude,wtmp"
+                    },
+                    {
+                      "key": "time>",
+                      "value": "=2020-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "time<",
+                      "value": "=<string>"
+                    },
+                    {
+                      "key": "latitude>",
+                      "value": "=<number>"
+                    },
+                    {
+                      "key": "latitude<",
+                      "value": "=<number>"
+                    },
+                    {
+                      "key": "longitude>",
+                      "value": "=<number>"
+                    },
+                    {
+                      "key": "longitude<",
+                      "value": "=<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0e53699d-66a6-41e3-b7d2-a6aaa81f81c0",
+              "name": "Dataset not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tabledap",
+                    "{{datasetID}}.{{fileType}}"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "variables",
+                      "value": "time,latitude,longitude,wtmp"
+                    },
+                    {
+                      "key": "time>",
+                      "value": "=2020-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "time<",
+                      "value": "=<string>"
+                    },
+                    {
+                      "key": "latitude>",
+                      "value": "=<number>"
+                    },
+                    {
+                      "key": "latitude<",
+                      "value": "=<number>"
+                    },
+                    {
+                      "key": "longitude>",
+                      "value": "=<number>"
+                    },
+                    {
+                      "key": "longitude<",
+                      "value": "=<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0a6ebc9c-2197-421d-a76d-f79e8fa0b8ce",
+          "name": "Download a subset of a gridded dataset",
+          "request": {
+            "name": "Download a subset of a gridded dataset",
+            "description": {
+              "content": "Retrieves satellite, model, or reanalysis data (CDM Grid type).\n\n**Query string structure:**\n`?var1[(d1_start):(d1_stop)][(d2_start):(d2_stop)],...`\n\nDimension subscripts use parentheses for value-based indexing:\n`?sst[(2020-01-01T12:00:00Z)][(0.0)][(20.0):(50.0)][(-80.0):(-60.0)]`\n\nStride syntax: `[(start):(stride):(stop)]`\nSelect all values in a dimension: `[]`\n\nDimensions are always in the order shown by `/info/{datasetID}/index.json`\n(typically time, altitude/depth, latitude, longitude for 4-D datasets).\n\nAlways call `/info/{datasetID}/index.json` first to discover dimension\nnames, their order, and valid ranges.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "griddap",
+                "{{datasetID}}.{{fileType}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/x-netcdf"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cce8b6a3-642a-45c4-af58-b54cfc08e79d",
+              "name": "Gridded data subset in the requested format.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "griddap",
+                    "{{datasetID}}.{{fileType}}"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/x-netcdf"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f66c20c7-1853-406d-aee0-4ccdd62dd0c0",
+              "name": "Bad request — unknown variable or out-of-range dimension subscript.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "griddap",
+                    "{{datasetID}}.{{fileType}}"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "80256e89-455c-41c4-a8af-0f10cf597b8b",
+              "name": "Dataset not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "griddap",
+                    "{{datasetID}}.{{fileType}}"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://coastwatch.pfeg.noaa.gov/erddap",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) ",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "datasetID"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) ",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "fileType"
+    }
+  ],
+  "info": {
+    "_postman_id": "d38b8d6f-01a9-49db-856a-7db189996eb4",
+    "name": "ERDDAP REST Data Access API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "OpenAPI specification for ERDDAP (Environmental Research Division's Data\nAccess Program), a scientific data server providing simple, consistent\naccess to gridded and tabular scientific datasets.\n\nERDDAP runs at many institutions worldwide. Set the server URL to the base\nURL of the instance you want to access.\n\n## Two-phase workflow for data access\n\n1. **Discover** — search for datasets (`/search/`) or list all (`/info/index.json`).\n2. **Inspect** — fetch dataset metadata (`/info/{datasetID}/index.json`) to learn\n   variable names, data types, units, and coordinate ranges.\n3. **Download** — request data from `/tabledap/` or `/griddap/` using the\n   variable names and constraint ranges discovered in step 2.\n\n## Constraint syntax (tabledap and griddap)\n\nConstraints are appended to the query string as `&varName>=value` pairs.\n\n| Operator | Meaning |\n|----------|---------|\n| `=`  | equals |\n| `!=` | not equals |\n| `<`, `<=`, `>`, `>=` | numeric / time comparison |\n| `=~` | Java regular expression match |\n\nString values must be double-quoted: `&stationType=\"fixed\"`.\nTime values can be ISO 8601 (`2020-01-01T00:00:00Z`), seconds since\n1970-01-01 (Unix epoch), or relative expressions (`now-7days`, `now-1hour`).\nSpatial relative extremes are also supported: `&latitude<min(latitude)+10`.\n\n## Response format selection\n\nThe desired format is embedded in the path (`.json`, `.csv`, `.nc`, etc.)\nrather than in an `Accept` header. See the `MetadataFileType` and\n`DataFileType` schemas for the full list.\n\n\nContact Support:\n Name: ERDDAP Project",
+      "type": "text/plain"
+    }
+  }
+}

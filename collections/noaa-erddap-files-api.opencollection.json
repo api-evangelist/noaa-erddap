@@ -1,0 +1,36 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ERDDAP REST Data Access Files API",
+    "version": "2.23"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Files",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Browse raw files for a dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://coastwatch.pfeg.noaa.gov/erddap/files/:datasetID",
+            "params": [
+              {
+                "name": "datasetID",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns an HTML directory listing of the raw source files for datasets\nthat expose a file system. Individual files can be downloaded by\nappending the filename to this URL.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

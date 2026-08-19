@@ -1,0 +1,42 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ERDDAP REST Data Access Metadata API",
+    "version": "2.23"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Metadata",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get variable and attribute metadata for a dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://coastwatch.pfeg.noaa.gov/erddap/info/:datasetID/index.:fileType",
+            "params": [
+              {
+                "name": "datasetID",
+                "value": "erdMBsstd1day",
+                "type": "path",
+                "description": "Unique dataset identifier (visible in search results as the `ID` column)."
+              },
+              {
+                "name": "fileType",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns a table describing every variable and global attribute in the\ndataset. Each row is one of:\n\n| Row Type  | Variable Name | Attribute Name | Data Type | Value |\n|-----------|--------------|----------------|-----------|-------|\n| attribute | NC_GLOBAL    | title          | String    | ...   |\n| variable  | time         |                | double    |       |\n| attribute | time         | units          | String    | seconds since 1970-01-01T00:00:00Z |\n\nUse this response to discover variable "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

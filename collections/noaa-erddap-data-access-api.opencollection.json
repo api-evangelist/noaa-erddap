@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ERDDAP REST Data Access API",
+    "version": "2.23"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data Access",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Download a subset of a tabular dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://coastwatch.pfeg.noaa.gov/erddap/tabledap/:datasetID.:fileType",
+            "params": [
+              {
+                "name": "datasetID",
+                "value": "cwwcNDBCMet",
+                "type": "path"
+              },
+              {
+                "name": "fileType",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "variables",
+                "value": "time,latitude,longitude,wtmp",
+                "type": "query",
+                "description": "Comma-separated variable names to include in the response.\nOmit to return all variables.\n"
+              },
+              {
+                "name": "time>=",
+                "value": "2020-01-01T00:00:00Z",
+                "type": "query",
+                "description": "Lower time bound (ISO 8601 or `now-Nunit` expression)."
+              },
+              {
+                "name": "time<=",
+                "value": "",
+                "type": "query",
+                "description": "Upper time bound."
+              },
+              {
+                "name": "latitude>=",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "latitude<=",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "longitude>=",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "longitude<=",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves in-situ, station, trajectory, or profile data (CDM types\nother than Grid).\n\n**Query string structure:** `?variables&constraints`\n\n- `variables` — comma-separated variable names; omit for all variables.\n- `constraints` — `&varName>=value` pairs appended after the variable list.\n\n**Special result modifiers (append to query):**\n- `&distinct()` — return only unique rows.\n- `&orderBy(\"var1,var2\")` — sort results.\n- `&orderByMax(\"var1\")` — keep only the row with the max value per group.\n- `&"
+        },
+        {
+          "info": {
+            "name": "Download a subset of a gridded dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/:datasetID.:fileType",
+            "params": [
+              {
+                "name": "datasetID",
+                "value": "erdMBsstd1day",
+                "type": "path"
+              },
+              {
+                "name": "fileType",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves satellite, model, or reanalysis data (CDM Grid type).\n\n**Query string structure:**\n`?var1[(d1_start):(d1_stop)][(d2_start):(d2_stop)],...`\n\nDimension subscripts use parentheses for value-based indexing:\n`?sst[(2020-01-01T12:00:00Z)][(0.0)][(20.0):(50.0)][(-80.0):(-60.0)]`\n\nStride syntax: `[(start):(stride):(stop)]`\nSelect all values in a dimension: `[]`\n\nDimensions are always in the order shown by `/info/{datasetID}/index.json`\n(typically time, altitude/depth, latitude, longitude for 4"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
