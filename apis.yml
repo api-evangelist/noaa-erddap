@@ -14,6 +14,17 @@ accessModel:
   method: derived
 image: https://www.noaa.gov/sites/default/files/styles/crop_394x394/public/2022-03/NOAA_2022_logo.png
 tags:
+  - Oceanography
+  - Meteorology
+  - Climate
+  - Environmental Data
+  - gridded data
+  - Tabular Data
+  - Scientific Data
+  - Government
+  - NOAA
+  - Open Data
+tags_raw:
   - oceanography
   - meteorology
   - climate
@@ -89,6 +100,8 @@ apis:
   humanURL: https://coastwatch.pfeg.noaa.gov/erddap/index.html
   baseURL: https://coastwatch.pfeg.noaa.gov/erddap
   tags:
+  - File
+  tags_raw:
   - Files
   properties:
   - type: OpenAPI
