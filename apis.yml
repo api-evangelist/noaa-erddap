@@ -1,5 +1,17 @@
 name: NOAA ERDDAP
 description: NOAA Environmental Research Division Data Access Program (ERDDAP) is a free, publicly accessible REST API and data server that provides a simple, consistent way to search, subset, and download gridded and tabular oceanographic, meteorological, and climate science datasets in a wide variety of common file formats.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: unknown
