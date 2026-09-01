@@ -26,16 +26,16 @@ accessModel:
   method: derived
 image: https://www.noaa.gov/sites/default/files/styles/crop_394x394/public/2022-03/NOAA_2022_logo.png
 tags:
-  - oceanography
-  - meteorology
-  - climate
-  - environmental data
+  - Oceanography
+  - Meteorology
+  - Climate
+  - Environmental Data
   - gridded data
-  - tabular data
-  - scientific data
-  - government
+  - Tabular Data
+  - Scientific Data
+  - Government
   - NOAA
-  - open data
+  - Open Data
 tags_raw:
   - oceanography
   - meteorology
