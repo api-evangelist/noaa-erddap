@@ -1,5 +1,8 @@
 name: NOAA ERDDAP
-description: NOAA Environmental Research Division Data Access Program (ERDDAP) is a free, publicly accessible REST API and data server that provides a simple, consistent way to search, subset, and download gridded and tabular oceanographic, meteorological, and climate science datasets in a wide variety of common file formats.
+description: NOAA Environmental Research Division Data Access Program (ERDDAP) is a free, publicly accessible
+  REST API and data server that provides a simple, consistent way to search, subset, and download gridded
+  and tabular oceanographic, meteorological, and climate science datasets in a wide variety of common
+  file formats.
 deliveryModel:
   model: saas
   open_source: false
@@ -26,29 +29,29 @@ accessModel:
   method: derived
 image: https://www.noaa.gov/sites/default/files/styles/crop_394x394/public/2022-03/NOAA_2022_logo.png
 tags:
-  - Oceanography
-  - Meteorology
-  - Climate
-  - Environmental Data
-  - gridded data
-  - Tabular Data
-  - Scientific Data
-  - Government
-  - NOAA
-  - Open Data
+- Oceanography
+- Meteorology
+- Climate
+- Environmental Data
+- gridded data
+- Tabular Data
+- Scientific Data
+- Government
+- NOAA
+- Open Data
 tags_raw:
-  - oceanography
-  - meteorology
-  - climate
-  - environmental data
-  - gridded data
-  - tabular data
-  - scientific data
-  - government
-  - NOAA
-  - open data
-created: "2026-06-13"
-modified: "2026-06-13"
+- oceanography
+- meteorology
+- climate
+- environmental data
+- gridded data
+- tabular data
+- scientific data
+- government
+- NOAA
+- open data
+created: '2026-06-13'
+modified: '2026-09-16'
 url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/apis.yml
 specificationVersion: '0.23'
 apis:
@@ -71,14 +74,11 @@ apis:
   - type: TermsOfService
     url: https://www.usa.gov/government-works
   - type: Plans
-    url: >-
-      https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/plans/plans.yml
+    url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/plans/plans.yml
   - type: RateLimits
-    url: >-
-      https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/rate-limits/rate-limits.yml
+    url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/rate-limits/rate-limits.yml
   - type: FinOps
-    url: >-
-      https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/finops/finops.yml
+    url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/finops/finops.yml
 - aid: noaa-erddap:noaa-erddap-discovery-api
   name: NOAA ERDDAP Discovery API
   description: Search and browse available datasets.
@@ -98,14 +98,11 @@ apis:
   - type: TermsOfService
     url: https://www.usa.gov/government-works
   - type: Plans
-    url: >-
-      https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/plans/plans.yml
+    url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/plans/plans.yml
   - type: RateLimits
-    url: >-
-      https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/rate-limits/rate-limits.yml
+    url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/rate-limits/rate-limits.yml
   - type: FinOps
-    url: >-
-      https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/finops/finops.yml
+    url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/finops/finops.yml
 - aid: noaa-erddap:noaa-erddap-files-api
   name: NOAA ERDDAP Files API
   description: Browse and download raw files associated with a dataset.
@@ -127,14 +124,11 @@ apis:
   - type: TermsOfService
     url: https://www.usa.gov/government-works
   - type: Plans
-    url: >-
-      https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/plans/plans.yml
+    url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/plans/plans.yml
   - type: RateLimits
-    url: >-
-      https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/rate-limits/rate-limits.yml
+    url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/rate-limits/rate-limits.yml
   - type: FinOps
-    url: >-
-      https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/finops/finops.yml
+    url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/finops/finops.yml
 - aid: noaa-erddap:noaa-erddap-metadata-api
   name: NOAA ERDDAP Metadata API
   description: Inspect variable and attribute metadata for a specific dataset.
@@ -154,20 +148,18 @@ apis:
   - type: TermsOfService
     url: https://www.usa.gov/government-works
   - type: Plans
-    url: >-
-      https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/plans/plans.yml
+    url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/plans/plans.yml
   - type: RateLimits
-    url: >-
-      https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/rate-limits/rate-limits.yml
+    url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/rate-limits/rate-limits.yml
   - type: FinOps
-    url: >-
-      https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/finops/finops.yml
+    url: https://raw.githubusercontent.com/api-evangelist/noaa-erddap/refs/heads/main/finops/finops.yml
 common:
-
-  - type: AgenticAccess
-    url: agentic-access/noaa-erddap-agentic-access.yml
-  - type: DomainSecurity
-    url: security/noaa-erddap-domain-security.yml
+- type: Website
+  url: https://noaa.gov
+- type: AgenticAccess
+  url: agentic-access/noaa-erddap-agentic-access.yml
+- type: DomainSecurity
+  url: security/noaa-erddap-domain-security.yml
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
