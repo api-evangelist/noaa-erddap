@@ -1,10 +1,7 @@
 {
   "provider": "noaa-erddap",
   "sources": [
-    "noaa-erddap-data-access-api-openapi.yml",
-    "noaa-erddap-discovery-api-openapi.yml",
-    "noaa-erddap-files-api-openapi.yml",
-    "noaa-erddap-metadata-api-openapi.yml"
+    "_original/openapi.yaml"
   ],
   "outputs": [
     "noaa-erddap-data-access-api-openapi.yml",
@@ -15,6 +12,15 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "openapi.yaml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "noaa-erddap-data-access-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "noaa-erddap-discovery-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "noaa-erddap-files-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "noaa-erddap-metadata-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
