@@ -200,36 +200,6 @@ paths:
           description: Dataset not found.
 components:
   schemas:
-    TabledapJsonResponse:
-      type: object
-      description: JSON response from a tabledap data request (same envelope as DatasetList).
-      properties:
-        table:
-          type: object
-          required:
-          - columnNames
-          - columnTypes
-          - columnUnits
-          - rows
-          properties:
-            columnNames:
-              type: array
-              items:
-                type: string
-            columnTypes:
-              type: array
-              items:
-                type: string
-            columnUnits:
-              type: array
-              items:
-                type: string
-                nullable: true
-            rows:
-              type: array
-              items:
-                type: array
-                items: {}
     DataFileType:
       type: string
       description: Response format for tabledap and griddap data requests.
@@ -278,3 +248,33 @@ components:
       - dataTable
       - subset
       - graph
+    TabledapJsonResponse:
+      type: object
+      description: JSON response from a tabledap data request (same envelope as DatasetList).
+      properties:
+        table:
+          type: object
+          required:
+          - columnNames
+          - columnTypes
+          - columnUnits
+          - rows
+          properties:
+            columnNames:
+              type: array
+              items:
+                type: string
+            columnTypes:
+              type: array
+              items:
+                type: string
+            columnUnits:
+              type: array
+              items:
+                type: string
+                nullable: true
+            rows:
+              type: array
+              items:
+                type: array
+                items: {}

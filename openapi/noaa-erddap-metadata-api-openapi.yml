@@ -82,22 +82,6 @@ paths:
           description: Dataset not found on this server.
 components:
   schemas:
-    MetadataFileType:
-      type: string
-      description: Response format for discovery and metadata endpoints.
-      enum:
-      - html
-      - csv
-      - csvp
-      - csv0
-      - json
-      - jsonlCSV1
-      - jsonlCSV
-      - jsonlKVP
-      - tsv
-      - tsvp
-      - tsv0
-      - xhtml
     DatasetInfo:
       type: object
       description: 'Variable and attribute metadata for a single dataset, returned as an
@@ -201,6 +185,22 @@ components:
                 - units
                 - String
                 - degree_C
+    MetadataFileType:
+      type: string
+      description: Response format for discovery and metadata endpoints.
+      enum:
+      - html
+      - csv
+      - csvp
+      - csv0
+      - json
+      - jsonlCSV1
+      - jsonlCSV
+      - jsonlKVP
+      - tsv
+      - tsvp
+      - tsv0
+      - xhtml
   parameters:
     metadataFileType:
       name: fileType

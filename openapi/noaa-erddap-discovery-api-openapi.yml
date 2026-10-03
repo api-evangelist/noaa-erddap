@@ -337,6 +337,22 @@ components:
                 type: array
                 items: {}
   parameters:
+    page:
+      name: page
+      in: query
+      description: Page number (1-based).
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    itemsPerPage:
+      name: itemsPerPage
+      in: query
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1000000
     categorizeAttribute:
       name: attribute
       in: path
@@ -353,22 +369,6 @@ components:
         - long_name
         - standard_name
         - variableName
-    itemsPerPage:
-      name: itemsPerPage
-      in: query
-      description: Maximum number of results to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1000000
-    page:
-      name: page
-      in: query
-      description: Page number (1-based).
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
     metadataFileType:
       name: fileType
       in: path
