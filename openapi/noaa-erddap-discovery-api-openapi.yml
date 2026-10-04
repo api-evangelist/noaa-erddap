@@ -254,6 +254,45 @@ paths:
               schema:
                 type: string
 components:
+  parameters:
+    itemsPerPage:
+      name: itemsPerPage
+      in: query
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1000000
+    page:
+      name: page
+      in: query
+      description: Page number (1-based).
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    metadataFileType:
+      name: fileType
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/MetadataFileType'
+    categorizeAttribute:
+      name: attribute
+      in: path
+      required: true
+      description: Metadata attribute to categorize by.
+      schema:
+        type: string
+        enum:
+        - cdm_data_type
+        - institution
+        - ioos_category
+        - keywords
+        - keywords_vocabulary
+        - long_name
+        - standard_name
+        - variableName
   schemas:
     MetadataFileType:
       type: string
@@ -336,42 +375,3 @@ components:
               items:
                 type: array
                 items: {}
-  parameters:
-    page:
-      name: page
-      in: query
-      description: Page number (1-based).
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-    itemsPerPage:
-      name: itemsPerPage
-      in: query
-      description: Maximum number of results to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1000000
-    categorizeAttribute:
-      name: attribute
-      in: path
-      required: true
-      description: Metadata attribute to categorize by.
-      schema:
-        type: string
-        enum:
-        - cdm_data_type
-        - institution
-        - ioos_category
-        - keywords
-        - keywords_vocabulary
-        - long_name
-        - standard_name
-        - variableName
-    metadataFileType:
-      name: fileType
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/MetadataFileType'
